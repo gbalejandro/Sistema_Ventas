@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Sistem_Ventas.Models;
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Sistem_Ventas.Controllers
@@ -12,7 +13,8 @@ namespace Sistem_Ventas.Controllers
     {
         public HomeController(IServiceProvider serviceProvider)
         {
-            CreateRoles(serviceProvider);
+            // CreateRoles(serviceProvider);
+            //ejecutarTareaAsync();
         }
 
         public IActionResult Index()
@@ -47,11 +49,25 @@ namespace Sistem_Ventas.Controllers
                         await roleManager.CreateAsync(new IdentityRole(item));
                     }
                 }
+                var user = await userManager.FindByIdAsync("0e2d2def-8f40-412f-8f6a-46da5f8af873");
+                await userManager.AddToRoleAsync(user, "Admin");
             }
             catch (Exception ex)
             {
                 mensaje = ex.Message;
             }
+        }
+        private async Task ejecutarTareaAsync()
+        {
+            var data = await Tareas();
+
+            String tarea = "Ahora ejecutaremos las demas líneas de código porque la tarea ha finalizado";
+        }
+        private async Task<String> Tareas()
+        {
+            Thread.Sleep(20 * 1000);
+            String tarea = "Tarea finalizada";
+            return tarea;
         }
     }
 }
